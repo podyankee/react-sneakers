@@ -1,16 +1,16 @@
 {
   "files.exclude": {
-    "node_modules/": true,
-    "public/": true,
-    "build/": true,
-    ".vscode/": true,
-    ".netlify/": true,
-    "package.json": true,
-    "package-lock.json": true,
-    ".babelrc": true,
-    "data/": true,
-    "README.md": true,
-    "yarn.lock": true
+    "node_modules/": false,
+    "public/": false,
+    "build/": false,
+    ".vscode/": false,
+    ".netlify/": false,
+    "package.json": false,
+    "package-lock.json": false,
+    ".babelrc": false,
+    "data/": false,
+    "README.md": false,
+    "yarn.lock": false
   },
   "cSpell.words": [
     "Andrey",
