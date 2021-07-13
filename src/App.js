@@ -14,27 +14,35 @@ function App() {
 	const [cartOpened, setCartOpened] = useState(false);
 
 	useEffect(() => {
-		// fetch('https://60e2719f5a5596001730f3d3.mockapi.io/items')
-		// 	.then(res => {
-		// 		return res.json();
-		// 	})
-		// 	.then(json => {
-		// 		setItems(json);
-		// 	});
-		axios.get('https://60e2719f5a5596001730f3d3.mockapi.io/items').then(res => {
-			setItems(res.data);
-		});
-		axios.get('https://60e2719f5a5596001730f3d3.mockapi.io/cart').then(res => {
-			setCartItems(res.data);
-		});
-		axios.get('https://60e2719f5a5596001730f3d3.mockapi.io/favorites').then(res => {
-			setFavorites(res.data);
-		});
+		async function fetchData() {
+			// fetch('https://60e2719f5a5596001730f3d3.mockapi.io/items')
+			// 	.then(res => {
+			// 		return res.json();
+			// 	})
+			// 	.then(json => {
+			// 		setItems(json);
+			// 	});
+			const itemsResponse = await axios.get('https://60e2719f5a5596001730f3d3.mockapi.io/items');
+			const cartResponse = await axios.get('https://60e2719f5a5596001730f3d3.mockapi.io/cart');
+			const favoritesResponse = await axios.get(
+				'https://60e2719f5a5596001730f3d3.mockapi.io/favorites',
+			);
+
+			setCartItems(cartResponse.data);
+			setFavorites(favoritesResponse.data);
+			setItems(itemsResponse.data);
+		}
+		fetchData();
 	}, []);
 
 	const onAddToCart = obj => {
-		axios.post('https://60e2719f5a5596001730f3d3.mockapi.io/cart', obj);
-		setCartItems(prev => [...prev, obj]);
+		axios.delete(`https://60e2719f5a5596001730f3d3.mockapi.io/cart/${obj.id}`);
+		if (cartItems.find(item => Number(item.id) === Number(obj.id))) {
+			setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)));
+		} else {
+			axios.post('https://60e2719f5a5596001730f3d3.mockapi.io/cart', obj);
+			setCartItems(prev => [...prev, obj]);
+		}
 	};
 	const onRemoveItem = id => {
 		axios.delete(`https://60e2719f5a5596001730f3d3.mockapi.io/cart/${id}`);
@@ -70,6 +78,7 @@ function App() {
 			<Route path="/" exact>
 				<Home
 					items={items}
+					cartItems={cartItems}
 					searchValue={searchValue}
 					setSearchValue={setSearchValue}
 					onChangeSearchInput={onChangeSearchInput}
