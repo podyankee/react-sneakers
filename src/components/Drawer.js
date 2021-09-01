@@ -1,6 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Info from './Info';
-import AppContext from '../context';
+
+import { useCart } from '../hooks/useCart';
 import axios from 'axios';
 
 // test
@@ -8,10 +9,12 @@ import axios from 'axios';
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function Drawer({ onClose, onRemove, items = [] }) {
-	const { cartItems, setCartItems } = useContext(AppContext);
+	const { cartItems, setCartItems, totalPrice } = useCart();
 	const [orderId, setOrderId] = useState(null);
 	const [isOrderComplete, setIsOrderComplete] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	// const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0);
+
 	const onClickOrder = async () => {
 		try {
 			setIsLoading(true);
@@ -71,12 +74,12 @@ function Drawer({ onClose, onRemove, items = [] }) {
 								<li className="d-flex">
 									<span>Итого:</span>
 									<div></div>
-									<b>21 498 грн.</b>
+									<b>{totalPrice} грн.</b>
 								</li>
 								<li className="d-flex">
 									<span>Налог 5% :</span>
 									<div></div>
-									<b>1074 грн.</b>
+									<b>{((totalPrice / 100) * 5).toFixed(2)} грн.</b>
 								</li>
 							</ul>
 							<button disabled={isLoading} onClick={onClickOrder} className="greenButton">
