@@ -3,6 +3,8 @@ import Info from './Info';
 import AppContext from '../context';
 import axios from 'axios';
 
+// test
+
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function Drawer({ onClose, onRemove, items = [] }) {
