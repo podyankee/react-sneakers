@@ -30,7 +30,6 @@ function App() {
 				'https://60e2719f5a5596001730f3d3.mockapi.io/favorites',
 			);
 			setIsLoading(false);
-
 			setCartItems(cartResponse.data);
 			setFavorites(favoritesResponse.data);
 			setItems(itemsResponse.data);
@@ -77,7 +76,16 @@ function App() {
 	};
 
 	return (
-		<AppContext.Provider value={{ items, cartItems, favorites, isItemAdded, onAddToFavorite }}>
+		<AppContext.Provider
+			value={{
+				items,
+				cartItems,
+				favorites,
+				isItemAdded,
+				onAddToFavorite,
+				setCartOpened,
+				setCartItems,
+			}}>
 			<div className="wrapper clear">
 				{cartOpened && (
 					<Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />
